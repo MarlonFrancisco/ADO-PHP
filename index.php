@@ -8,8 +8,8 @@
 	// echo json_encode($result);
 
 	$user = new Usuario;
-	$user->loadById(1);
-	$user->update("marlingx", "6562354");
+	$user->loadById(3);
+	$user->delete();
 
 	echo $user;
  ?>

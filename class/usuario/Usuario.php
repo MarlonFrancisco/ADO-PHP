@@ -119,6 +119,19 @@
 			));
 		}
 
+		public function delete() {
+			$sql = new \Ado;
+
+			$sql->query("DELETE FROM TB_USUARIO WHERE ID_USUARIO = :ID", array(
+				":ID" => $this->getIdUsuario()
+			));
+
+			$this->setIdUsuario(0);
+			$this->setDesUsuario("");
+			$this->setDtCadUsuario(new \DateTime());
+			$this->setSenhaUsuario("");
+		}
+
 		public function insert() {
 			$sql = new \Ado;
 			$results = $sql->select("CALL sp_usuario_insert(:LOGIN, :PASSWORD)", array(
