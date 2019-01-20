@@ -1,9 +1,14 @@
 <?php 
 	require_once("config.php");
 
-	$ado = new Ado;
+	use usuario\Usuario;
 
-	$results = $ado->select("SELECT * FROM TB_USUARIO");
+	// $result = Usuario::getList();
 
-	echo json_encode($results);
+	// echo json_encode($result);
+
+	$user = new Usuario;
+	$user->logar("user", "123456");
+
+	echo $user;
  ?>
