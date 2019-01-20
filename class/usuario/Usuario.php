@@ -18,11 +18,6 @@
 		private $desUsuario;
 		private $senhaUsuario;
 		private $dtCadUsuario;
-		private $conn;
-
-		public function __construct() {
-			$this->conn = new \Ado;
-		}
 
 		public function getIdUsuario():string {
 			return $this->idUsuario;
@@ -74,8 +69,8 @@
 		}
 
 		public function loadById($id) {
-
-			$results = $this->conn->select("SELECT * FROM TB_USUARIO WHERE ID_USUARIO = :ID", array(
+			$sql = new \Ado;
+			$results = $sql->select("SELECT * FROM TB_USUARIO WHERE ID_USUARIO = :ID", array(
 				":ID" => $id
 			));
 
@@ -92,13 +87,15 @@
 		}
 
 		public static function search($des) {
-			return $this->conn->select("SELECT * FROM TB_USUARIO WHERE DES_USUARIO LIKE :LOGIN", array(
+			$sql = new \Ado;
+			return $sql->select("SELECT * FROM TB_USUARIO WHERE DES_USUARIO LIKE :LOGIN", array(
 				":LOGIN" => "%".$des."%"
 			));
 		}
 
 		public function logar($des, $senha) {
-			$results = $this->conn->select("SELECT * FROM TB_USUARIO WHERE DES_USUARIO = :DES AND SENHA_USUARIO = :SENHA", array(
+			$sql = new \Ado;
+			$results = $sql->select("SELECT * FROM TB_USUARIO WHERE DES_USUARIO = :DES AND SENHA_USUARIO = :SENHA", array(
 				":DES" => $des,
 				":SENHA" => $senha
 			));
