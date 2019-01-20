@@ -8,9 +8,8 @@
 	// echo json_encode($result);
 
 	$user = new Usuario;
-	$user->setDesUsuario("marlinho");
-	$user->setSenhaUsuario("5346");
-	$user->insert();
+	$user->loadById(1);
+	$user->update("marlingx", "6562354");
 
 	echo $user;
  ?>

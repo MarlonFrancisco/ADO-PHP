@@ -106,6 +106,19 @@
 			}
 		}
 
+		public function update($user, $senha) {
+			$sql = new \Ado;
+
+			$this->setDesUsuario($user);
+			$this->setSenhaUsuario($senha);
+
+			$sql->query("UPDATE TB_USUARIO SET DES_USUARIO = :DES, SENHA_USUARIO = :SENHA WHERE ID_USUARIO = :ID", array(
+				":DES" => $this->getDesUsuario(),
+				":SENHA" => $this->getSenhaUsuario(),
+				":ID" => $this->getIdUsuario()
+			));
+		}
+
 		public function insert() {
 			$sql = new \Ado;
 			$results = $sql->select("CALL sp_usuario_insert(:LOGIN, :PASSWORD)", array(
