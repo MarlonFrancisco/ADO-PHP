@@ -18,6 +18,11 @@
 		private $desUsuario;
 		private $senhaUsuario;
 		private $dtCadUsuario;
+		private $conn;
+
+		public function __construct() {
+			$this->conn = new \Ado;
+		}
 
 		public function getIdUsuario():string {
 			return $this->idUsuario;
@@ -60,54 +65,59 @@
 			));
 		}
 
+		public function setData($data) {
+
+			$this->setIdUSuario($data['ID_USUARIO']);
+			$this->setDesUsuario($data['DES_USUARIO']);
+			$this->setSenhaUsuario($data['SENHA_USUARIO']);
+			$this->setDtCadUsuario(new \DateTime($data['DT_CAD_USUARIO']));
+		}
+
 		public function loadById($id) {
 
-			$sql = new \Ado;
-			$id = 1;
-			$results = $sql->select("SELECT * FROM TB_USUARIO WHERE ID_USUARIO = :ID", array(
+			$results = $this->conn->select("SELECT * FROM TB_USUARIO WHERE ID_USUARIO = :ID", array(
 				":ID" => $id
 			));
 
 			if(count($results) > 0) {
 
-				$row = $results[0];
+				$this->setData($results[0]);
 
-				$this->setIdUSuario($row['ID_USUARIO']);
-				$this->setDesUsuario($row['DES_USUARIO']);
-				$this->setSenhaUsuario($row['SENHA_USUARIO']);
-				$this->setDtCadUsuario(new DateTime($row['DT_CAD_USUARIO']));
 			}
 		}
 
 		public static function getList() {
 			$sql = new \Ado;
-
 			return $sql->select("SELECT * FROM TB_USUARIO ORDER BY DES_USUARIO");
 		}
 
 		public static function search($des) {
-			$sql = new \Ado;
-
-			return $sql->select("SELECT * FROM TB_USUARIO WHERE DES_USUARIO LIKE :LOGIN", array(
+			return $this->conn->select("SELECT * FROM TB_USUARIO WHERE DES_USUARIO LIKE :LOGIN", array(
 				":LOGIN" => "%".$des."%"
 			));
 		}
 
 		public function logar($des, $senha) {
-			$sql = new \Ado;
-
-			$results = $sql->select("SELECT * FROM TB_USUARIO WHERE DES_USUARIO = :DES AND SENHA_USUARIO = :SENHA", array(
+			$results = $this->conn->select("SELECT * FROM TB_USUARIO WHERE DES_USUARIO = :DES AND SENHA_USUARIO = :SENHA", array(
 				":DES" => $des,
 				":SENHA" => $senha
 			));
 
 			if(count($results) > 0) {
-				$row = $results[0];
 
-				$this->setDesUsuario($row["DES_USUARIO"]);
-				$this->setSenhaUsuario($row["SENHA_USUARIO"]);
-				$this->setDtCadUsuario(new \DateTime($row['DT_CAD_USUARIO']));
-				$this->setIdUSuario($row['ID_USUARIO']);
+				$this->setData($results[0]);
+			}
+		}
+
+		public function insert() {
+			$sql = new \Ado;
+			$results = $sql->select("CALL sp_usuario_insert(:LOGIN, :PASSWORD)", array(
+				":LOGIN" => $this->getDesUsuario(),
+				":PASSWORD" => $this->getSenhaUsuario()
+			));
+
+			if(count($results) > 0) {
+				$this->setData($results[0]);
 			}
 		}
 	}

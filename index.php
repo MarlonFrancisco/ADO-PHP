@@ -8,7 +8,9 @@
 	// echo json_encode($result);
 
 	$user = new Usuario;
-	$user->logar("user", "123456");
+	$user->setDesUsuario("marlinho");
+	$user->setSenhaUsuario("5346");
+	$user->insert();
 
 	echo $user;
  ?>
